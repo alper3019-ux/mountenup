@@ -92,6 +92,12 @@ function thermalErode(h, N, cell, talus, passes) {
 }
 
 const yieldFrame = () => new Promise((r) => setTimeout(r, 0));
+// Zeitbudget: lange Rechenschleifen geben spätestens alle ~8 ms den Main-Thread frei
+let sliceStart = 0;
+const maybeYield = async () => {
+  const now = performance.now();
+  if (now - sliceStart > 8) { await yieldFrame(); sliceStart = performance.now(); }
+};
 
 /* ======================================================================
    Gelände-Material: MeshStandardMaterial + eigene Farb-/Bump-Logik
@@ -191,9 +197,12 @@ const ROUTE_XZ = [[-1.8, 9.4], [1.9, 7.6], [-1.3, 6.0], [1.7, 4.6], [-0.7, 3.3],
 async function buildTerrain(seg) {
   const N = seg + 1, cell = SIZE / seg, half = SIZE / 2;
   const H = new Float32Array(N * N);
-  for (let iz = 0; iz < N; iz++) for (let ix = 0; ix < N; ix++) H[iz * N + ix] = massif(-half + ix * cell, -half + iz * cell);
-  await yieldFrame();
-  thermalErode(H, N, cell, 1.5, 6);
+  sliceStart = performance.now();
+  for (let iz = 0; iz < N; iz++) {
+    for (let ix = 0; ix < N; ix++) H[iz * N + ix] = massif(-half + ix * cell, -half + iz * cell);
+    await maybeYield();
+  }
+  for (let pass = 0; pass < 6; pass++) { thermalErode(H, N, cell, 1.5, 1); await maybeYield(); }
 
   const idx = (x, z) => {
     const gx = Math.min(N - 2, Math.max(0, (x + half) / cell)), gz = Math.min(N - 2, Math.max(0, (z + half) / cell));
@@ -251,6 +260,7 @@ async function buildTerrain(seg) {
       }
       dst[iz * N + ix] = s / c;
     }
+    await maybeYield();
   }
   for (let iz = 0; iz < N; iz++) for (let ix = 0; ix < N; ix++) {
     const i = iz * N + ix;
@@ -260,6 +270,7 @@ async function buildTerrain(seg) {
     pos.set([-half + ix * cell, H[i], -half + iz * cell], i * 3);
     nor.set([nx / l, 1 / l, nz / l], i * 3);
     ao[i] = Math.min(1, Math.max(0.4, 1 - Math.max(0, blur[i] - H[i]) * 1.8)) * (1 - trail[i] * 0.12);
+    if (ix === N - 1) await maybeYield();
   }
   const index = new Uint32Array(seg * seg * 6);
   let k = 0;
@@ -823,7 +834,15 @@ export async function createClimb(canvas, { reducedMotion = false, isMobile = fa
     setProgress(u) { if (!reducedMotion) state.target = Math.min(1, Math.max(0, u)); },
     setActive(on) { state.active = on || reducedMotion; if (on) state.dirty = true; },
     getState: () => ({ p: state.p, target: state.target, active: state.active, hidden: state.hidden, frames: state.frames, climber: climber.root.position.toArray() }),
-    warmup: () => (renderer.extensions.has('KHR_parallel_shader_compile') ? renderer.compileAsync(scene, camera).catch(() => {}) : Promise.resolve()),
+    // Shader vorab übersetzen: parallel, wenn möglich; sonst Objekt für Objekt mit Pausen
+    warmup: async () => {
+      if (renderer.extensions.has('KHR_parallel_shader_compile')) return renderer.compileAsync(scene, camera).catch(() => {});
+      for (const child of [...scene.children]) {
+        if (child.isLight || !child.visible) continue;
+        try { renderer.compile(child, camera, scene); } catch { /* beim ersten Bild nachgeholt */ }
+        await yieldFrame();
+      }
+    },
     dispose() { ro.disconnect(); document.removeEventListener('visibilitychange', onVisibility); renderer.dispose(); },
   };
 }

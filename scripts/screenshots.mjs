@@ -4,13 +4,13 @@
  * Mobil, reduzierte Bewegung. Meldet Konsolenfehler/-warnungen, Seitenfehler,
  * HTTP-Fehler (>= 400) und Drittanbieter-Requests.
  *
- *   URL=https://… OUT=screens/v2 node scripts/screenshots.mjs [desktop|mobile|reduced|all]
+ *   URL=https://… OUT=screens/v3 node scripts/screenshots.mjs [desktop|mobile|reduced|all]
  */
 import { chromium } from 'playwright';
 import { mkdirSync } from 'node:fs';
 
 const URL = process.env.URL || 'http://localhost:4173/';
-const OUT = process.env.OUT || 'screens/v2';
+const OUT = process.env.OUT || 'screens/v3';
 const mode = process.argv[2] || 'all';
 mkdirSync(OUT, { recursive: true });
 const browser = await chromium.launch({
@@ -50,7 +50,7 @@ async function run(name, ctxOpts, { climb = [], sections = [], reduced = false }
   await ctx.close();
 }
 
-if (mode === 'all' || mode === 'desktop') await run('desktop', { viewport: { width: 1440, height: 900 } }, { climb: [0.02, 0.3, 0.55, 0.8, 1], sections: ['touren', 'warum', 'galerie', 'ablauf', 'stimmen', 'kontakt'] });
+if (mode === 'all' || mode === 'desktop') await run('desktop', { viewport: { width: 1440, height: 900 } }, { climb: [0, 0.3, 0.55, 0.8, 1], sections: ['touren', 'warum', 'galerie', 'ablauf', 'stimmen', 'kontakt'] });
 if (mode === 'all' || mode === 'mobile') await run('mobile', { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true }, { climb: [0.3, 1], sections: ['touren', 'galerie'] });
 if (mode === 'all' || mode === 'reduced') await run('reduced', { viewport: { width: 1440, height: 900 } }, { climb: [0], sections: ['galerie'], reduced: true });
 await browser.close();
