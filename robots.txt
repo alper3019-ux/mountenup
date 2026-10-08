@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://alper3019-ux.github.io/mountenup/sitemap.xml
