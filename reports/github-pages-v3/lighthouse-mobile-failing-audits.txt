@@ -1,0 +1,12 @@
+speed-index (0.77) 4.2 s
+total-blocking-time (0.3) 930 ms
+max-potential-fid (0) 1,170 ms
+interactive (0.77) 5.0 s
+mainthread-work-breakdown (0) 3.9 s
+bootup-time (0) 2.6 s
+valid-source-maps (0) 
+unused-javascript (0) Est savings of 74 KiB
+cache-insight (0) Est savings of 546 KiB
+image-delivery-insight (0) Est savings of 75 KiB
+network-dependency-tree-insight (0) 
+render-blocking-insight (0.5) 

@@ -1,0 +1,28 @@
+PASS  Menü öffnet per Tastatur (aria-expanded=true)
+PASS  main + footer sind inert, solange Menü offen
+PASS  Tab vom Button führt in die Menülinks  – 01Touren
+PASS  Escape schließt Menü
+PASS  Fokus kehrt zum Menü-Button zurück
+PASS  inert wird wieder entfernt
+PASS  Kein Custom-Cursor (keine Elemente/Klassen, native Zeiger)  – {"el":0,"cls":false,"body":"auto","link":"pointer","tour":"auto"}
+PASS  Buttons bewegen sich beim Hover nicht (kein Magnet-Effekt)  – nav none -> none, btn matrix(1, 0, 0, 1, 0, 0)
+PASS  Keine Endlos-Animationen auf der Seite (kein Pause-Schalter nötig)
+PASS  Genau ein Canvas, nur in #aufstieg, nicht seitenweit fixiert  – {"n":1,"inClimb":true,"pos":"absolute"}
+PASS  WebGL-Szene geladen (is-ready)
+PASS  Scroll treibt den Aufstieg: Fortschritt + Höhe steigen  – p 0.15 -> 0.7, Höhe 2326 -> 3365 m
+PASS  Canvas-Bild ändert sich mit dem Scroll (> 5 % Pixel)  – 98.3 %
+PASS  Ohne Scroll: keine neuen Frames, Bild steht (kein Dauer-Loop)  – Frames 31 -> 31, 0 Pixel
+PASS  Hochscrollen lässt die Figur absteigen  – 3365 -> 2678 m
+PASS  Tab verborgen: Rendern pausiert, danach geht es weiter  – Frames 39 -> 39 (verborgen) -> 45
+PASS  Galerie: kein 3D dahinter, Szene rendert nicht  – {"visible":false,"frames":45,"after":45}
+PASS  Hero-Headline: zerlegte Zeilen aria-hidden, SR-Kopie vorhanden  – Höher, als du denkst. Höher, als du denkst.
+PASS  Keine aria-label auf span/p/div ohne Rolle  – 0
+PASS  Formular: aria-invalid auf allen fehlerhaften Pflichtfeldern  – name,email,nachricht,datenschutz
+PASS  Formular: Fokus auf erstem fehlerhaften Feld  – f-name
+PASS  Formular: Fehlermeldung sichtbar + per aria-describedby verknüpft
+PASS  Formular: Statusmeldung in Live-Region  – Bitte prüfen Sie die 4 markierten Felder.
+PASS  Formular: aria-invalid verschwindet nach Korrektur
+PASS  Formular (Demo/Mailto): Hinweis sichtbar  – Demo-Version: Dieses Formular sendet und speichert keine Daten. MountenUp! und die Kontaktadresse sind fiktiv.
+PASS  Formular (Demo/Mailto): keine vorgetäuschte Erfolgsmeldung  – Demo-Modus: Ihre Angaben sind vollständig, wurden aber nicht gesendet und nicht gespeichert.
+
+26/26 bestanden
