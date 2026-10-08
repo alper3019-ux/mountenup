@@ -49,14 +49,3 @@
 @keyframes underline { 0% { background-size: 100% 1px; background-position: right bottom; } 50% { background-size: 0 1px; background-position: right bottom; } 50.01% { background-position: left bottom; } 100% { background-size: 100% 1px; background-position: left bottom; } }
 
 
-/* ---------- Pause-Schalter für Animationen (WCAG 2.2.2) ---------- */
-.motion-toggle { width: 44px; height: 44px; flex-shrink: 0; border: 1px solid var(--line); border-radius: 50%; background: transparent; color: var(--fg); cursor: pointer; display: grid; place-items: center; transition: border-color .3s, background-color .3s; }
-.motion-toggle:hover { border-color: rgba(238,243,247,.45); }
-.motion-toggle__icon { position: relative; width: 10px; height: 12px; }
-/* Zustand "läuft": Pause-Symbol (zwei Balken) */
-.motion-toggle__icon::before, .motion-toggle__icon::after { content: ''; position: absolute; top: 0; width: 3px; height: 12px; background: currentColor; border-radius: 1px; }
-.motion-toggle__icon::before { left: 0; } .motion-toggle__icon::after { right: 0; }
-/* Zustand "pausiert": Play-Dreieck */
-.motion-toggle[aria-pressed='true'] { background: var(--fg); color: var(--bg); }
-.motion-toggle[aria-pressed='true'] .motion-toggle__icon::after { display: none; }
-.motion-toggle[aria-pressed='true'] .motion-toggle__icon::before { left: 1px; width: 0; height: 0; background: none; border-radius: 0; border-left: 10px solid currentColor; border-top: 6px solid transparent; border-bottom: 6px solid transparent; }

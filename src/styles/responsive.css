@@ -1,46 +1,48 @@
 /* ======================================================================
    Breakpoints + prefers-reduced-motion
    ====================================================================== */
-
-/* ---------- Responsive ---------- */
 @media (max-width: 1100px) {
-  .service { grid-template-columns: 3.5rem 1fr; }
-  .service__text, .service .tags { grid-column: 2; justify-content: flex-start; }
-  .process__steps { grid-template-columns: 1fr 1fr; row-gap: 4rem; }
-  .process__line { display: none; }
-  .step::before { display: none; }
-  .step { border-top: 1px solid var(--line); padding-top: 1.4rem; }
+  .steps { grid-template-columns: 1fr 1fr; row-gap: 3rem; }
+  .section__head .section__title { grid-column: 1 / span 9; }
+  .section__intro { grid-column: 1 / span 8; margin-top: 1.4rem; }
+  .split__text { grid-column: 7 / span 6; }
+  .split--reverse .split__text { grid-column: 1 / span 6; }
 }
 @media (max-width: 860px) {
   .nav__links, .nav__cta { display: none; }
   .nav__burger { display: block; }
-  .hero { padding-top: 6.5rem; }
-  .hero__title { font-size: clamp(3.4rem, 16.5vw, 6rem); margin: 1.5rem 0; align-self: end; }
-  .hero__title .line:nth-child(2) { padding-left: 0; }
-  .hero__bottom { flex-direction: column; align-items: flex-start; gap: 1.6rem; }
-  .hero__hint { display: none; }
-  .section__intro { justify-self: start; }
-  .statement { min-height: 90vh; }
-  .tours, .quotes, .gallery__grid { grid-template-columns: 1fr; }
-  .g--wide { grid-column: auto; }
-  .studio__grid, .contact__grid { grid-template-columns: 1fr; }
+  .hero { padding: 6.5rem 0 4rem; }
+  .hero__title { grid-column: 1 / -1; font-size: clamp(3.2rem, 16vw, 6rem); }
+  .hero__lead, .hero__actions { grid-column: 1 / -1; justify-self: start; }
+  .hero__actions { margin-top: 1.6rem; gap: 1.2rem; flex-wrap: wrap; }
+  .hero__credit { left: var(--pad); right: auto; }
+  .section__head .section__title, .section__intro { grid-column: 1 / -1; }
+  .tours, .gallery { grid-template-columns: 1fr; }
+  .split, .contact__grid { grid-template-columns: 1fr; row-gap: 2.4rem; }
+  .split__media, .split__text, .split--reverse .split__media, .split--reverse .split__text, .contact__info, .form { grid-column: 1; grid-row: auto; }
+  .split__media picture { aspect-ratio: 4 / 3; }
   .form__row { grid-template-columns: 1fr; }
   .footer__bottom { flex-direction: column; }
+  /* Aufstieg mobil: Titel oben, Etappe unten, Höhenmesser oben rechts */
+  .climb__ui { grid-template-columns: 1fr auto; padding-top: 5.5rem; padding-bottom: 2rem; }
+  .climb__head { grid-column: 1; }
+  .climb__title { font-size: clamp(1.6rem, 7vw, 2.2rem); }
+  .chapters { grid-column: 1 / -1; }
+  .chapter { padding: 1.1rem 1.2rem; border-radius: var(--radius); background: rgba(11,18,25,.72); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  .chapter h3 { font-size: 1.4rem; margin: .3rem 0 .3rem; }
+  .chapter p { font-size: .92rem; }
+  .altimeter { grid-column: 2; grid-row: 1; align-self: start; column-gap: .7rem; }
+  .altimeter__value { font-size: 1.6rem; }
+  .altimeter__track { height: 80px; }
+  .climb.is-static .chapters { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 560px) {
-  .process__steps { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr; }
   .hero__meta { font-size: .65rem; }
-  .hero__actions { gap: 1.2rem; }
-  .service { grid-template-columns: 1fr; gap: .9rem; padding: 2rem 0; }
-  .service__text, .service .tags { grid-column: 1; }
+  .climb.is-static .chapters { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
-  .grain { animation: none; }
-  .marquee__track { animation: none; flex-wrap: wrap; width: auto; justify-content: center; }
-  .marquee__track span[aria-hidden='true'] { display: none; }
   .js .reveal-up, .js .reveal-fade { opacity: 1; }
-  .statement__text .word { opacity: 1; }
 }
-

@@ -1,6 +1,6 @@
 /**
  * Interaktionstests (Tastatur/ARIA) gegen die laufende Seite:
- * Mobiles Menü (Escape, Fokus, inert), Pause-Schalter, Formular-Fehler.
+ * Mobiles Menü (Escape, Fokus, inert), Aufstieg-Szene (Scroll, Stillstand, Tab verborgen), Formular-Fehler.
  *   URL=http://localhost:4173/ node scripts/interaction-test.mjs
  */
 import { chromium } from 'playwright';
@@ -88,30 +88,49 @@ const check = (name, ok, detail = '') => { results.push({ name, ok }); console.l
   const moved = await page.evaluate(() => { const b = document.querySelector('.nav__cta'); const t = getComputedStyle(b).transform; return t; });
   check('Buttons bewegen sich beim Hover nicht (kein Magnet-Effekt)', before === after && (moved === 'none' || moved === 'matrix(1, 0, 0, 1, 0, 0)'), `nav ${before} -> ${after}, btn ${moved}`);
 
-  await page.click('.motion-toggle');
-  const paused = await page.evaluate(() => ({
-    pressed: document.querySelector('.motion-toggle').getAttribute('aria-pressed'),
-    cls: document.documentElement.classList.contains('motion-paused'),
-    marquee: getComputedStyle(document.querySelector('.marquee__track')).animationPlayState,
-  }));
-  check('Pause-Schalter: aria-pressed=true + Klasse gesetzt', paused.pressed === 'true' && paused.cls);
-  check('Marquee-Animation pausiert', paused.marquee === 'paused', paused.marquee);
-  const running = await page.evaluate(() => document.getAnimations().filter((a) => a.animationName && a.playState === 'running').map((a) => a.animationName));
-  check('Alle CSS-Endlosanimationen pausiert', running.length === 0, running.join(','));
-  // WebGL-Frame vergleichen: bei Pause soll sich das Bild ohne Maus/Scroll nicht ändern.
-  // Für den Pixelvergleich werden DOM-Ebenen über dem Canvas ausgeblendet (das Grain-Overlay
-  // erzeugt beim Software-Compositing minimale Pixelabweichungen, obwohl seine Animation pausiert ist).
-  const isolate = await page.addStyleTag({ content: 'body > *:not(canvas){visibility:hidden !important} body::before{display:none}' });
-  const shot = async () => (await page.screenshot()).toString('base64');
-  await page.waitForTimeout(4500); // exponentielle Glättung von Maus-/Scrollwerten ausklingen lassen
-  const a = await shot(); await page.waitForTimeout(1200); const b = await shot();
-  const still = await pixelDiff(a, b);
-  check('WebGL-Objekt steht still, wenn pausiert (< 0,01 % Pixel abweichend)', still.ratio < 0.0001, `${still.changed} von ${still.total} Pixeln`);
-  await page.evaluate(() => document.querySelector('.motion-toggle').click());
-  const c = await shot(); await page.waitForTimeout(1200); const d = await shot();
-  const moving = await pixelDiff(c, d);
-  check('WebGL-Objekt bewegt sich wieder nach erneutem Klick', moving.ratio > 0.001, `${moving.changed} Pixel abweichend`);
-  await isolate.evaluate((el) => el.remove());
+  // --- v2: keine Endlos-Animationen, 3D nur im Abschnitt #aufstieg ---
+  const infinite = await page.evaluate(() => document.getAnimations().filter((a) => a.effect?.getComputedTiming().iterations === Infinity).map((a) => a.animationName || 'anim'));
+  check('Keine Endlos-Animationen auf der Seite (kein Pause-Schalter nötig)', infinite.length === 0, infinite.join(','));
+  const cv = await page.evaluate(() => { const c = [...document.querySelectorAll('canvas')]; return { n: c.length, inClimb: c.every((x) => x.closest('#aufstieg')), pos: c.map((x) => getComputedStyle(x).position).join(',') }; });
+  check('Genau ein Canvas, nur in #aufstieg, nicht seitenweit fixiert', cv.n === 1 && cv.inClimb && cv.pos === 'absolute', JSON.stringify(cv));
+
+  const climbAt = async (f) => {
+    await page.evaluate((f) => { const s = document.querySelector('#aufstieg'); const top = s.getBoundingClientRect().top + scrollY; window.scrollTo(0, top + f * (s.offsetHeight - innerHeight)); }, f);
+    await page.waitForTimeout(2500);
+    return page.evaluate(() => { const s = document.querySelector('#aufstieg'); return { p: Number(s.dataset.progress), alt: Number(s.dataset.altitude), frames: Number(document.querySelector('.climb__canvas').dataset.frames || 0), ready: s.classList.contains('is-ready') }; });
+  };
+  const canvasShot = async () => (await page.locator('.climb__canvas').screenshot()).toString('base64');
+  const s1 = await climbAt(0.15); const img1 = await canvasShot();
+  const s2 = await climbAt(0.7); const img2 = await canvasShot();
+  check('WebGL-Szene geladen (is-ready)', s1.ready && s2.ready);
+  check('Scroll treibt den Aufstieg: Fortschritt + Höhe steigen', s2.p > s1.p + 0.4 && s2.alt > s1.alt + 300, `p ${s1.p} -> ${s2.p}, Höhe ${s1.alt} -> ${s2.alt} m`);
+  const climbDiff = await pixelDiff(img1, img2);
+  check('Canvas-Bild ändert sich mit dem Scroll (> 5 % Pixel)', climbDiff.ratio > 0.05, `${(climbDiff.ratio * 100).toFixed(1)} %`);
+  // Stillstand: ohne Scroll kein neuer Frame und kein Pixelunterschied
+  const f0 = await page.evaluate(() => Number(document.querySelector('.climb__canvas').dataset.frames));
+  const st1 = await canvasShot(); await page.waitForTimeout(1500); const st2 = await canvasShot();
+  const f1 = await page.evaluate(() => Number(document.querySelector('.climb__canvas').dataset.frames));
+  const stillDiff = await pixelDiff(st1, st2);
+  check('Ohne Scroll: keine neuen Frames, Bild steht (kein Dauer-Loop)', f1 === f0 && stillDiff.changed === 0, `Frames ${f0} -> ${f1}, ${stillDiff.changed} Pixel`);
+  // Rückwärts scrollen = Abstieg
+  const s3 = await climbAt(0.35);
+  check('Hochscrollen lässt die Figur absteigen', s3.alt < s2.alt, `${s2.alt} -> ${s3.alt} m`);
+  // Tab verborgen: kein Rendern
+  await page.evaluate(() => { Object.defineProperty(document, 'hidden', { configurable: true, get: () => true }); document.dispatchEvent(new Event('visibilitychange')); });
+  const h0 = await page.evaluate(() => Number(document.querySelector('.climb__canvas').dataset.frames));
+  await climbAt(0.6);
+  const h1 = await page.evaluate(() => Number(document.querySelector('.climb__canvas').dataset.frames));
+  await page.evaluate(() => { Object.defineProperty(document, 'hidden', { configurable: true, get: () => false }); document.dispatchEvent(new Event('visibilitychange')); });
+  await page.waitForTimeout(1500);
+  const h2 = await page.evaluate(() => Number(document.querySelector('.climb__canvas').dataset.frames));
+  check('Tab verborgen: Rendern pausiert, danach geht es weiter', h1 === h0 && h2 > h1, `Frames ${h0} -> ${h1} (verborgen) -> ${h2}`);
+  // Nach dem Abschnitt: kein Canvas im Viewport, kein Rendern
+  await page.evaluate(() => window.scrollTo(0, document.querySelector('#galerie').getBoundingClientRect().top + scrollY));
+  await page.waitForTimeout(2000);
+  const g = await page.evaluate(() => { const r = document.querySelector('.climb__canvas').getBoundingClientRect(); return { visible: r.bottom > 0 && r.top < innerHeight, frames: Number(document.querySelector('.climb__canvas').dataset.frames) }; });
+  await page.evaluate(() => window.scrollBy(0, 400)); await page.waitForTimeout(1500);
+  const g2 = await page.evaluate(() => Number(document.querySelector('.climb__canvas').dataset.frames));
+  check('Galerie: kein 3D dahinter, Szene rendert nicht', !g.visible && g2 === g.frames, JSON.stringify({ ...g, after: g2 }));
 
   const sr = await page.evaluate(() => ({
     h1: document.querySelector('h1').innerText.replace(/\s+/g, ' ').trim(),

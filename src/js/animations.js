@@ -1,17 +1,19 @@
 /**
- * Alle GSAP-Animationen der Startseite: Hero-Intro, Text-Reveals,
- * Scroll-Szenen (ScrollTrigger) und Zähler.
+ * GSAP-Animationen der Startseite (v2: ruhiger, bewusst gesetzte Übergänge).
  *
- * Barrierefreiheit: SplitText zerlegt Texte in viele <span>/<div>.
- * Für Hero-Headline und Statement nutzen wir `aria: 'none'` – das sichtbare,
- * zerlegte Element ist im HTML bereits aria-hidden, und eine
- * .visually-hidden-Kopie liefert Screenreadern den Satz am Stück
- * (Empfehlung aus der GSAP-SplitText-Doku für verschachtelte Elemente).
+ * - Hero: Zeichen-Intro nach dem Preloader; beim Wegscrollen blendet der Text
+ *   aus und das Foto zoomt minimal + dunkelt in --bg ab (Übergang zu #aufstieg).
+ * - Abschnitte: Trennlinie zeichnet sich, Titelzeilen steigen maskiert auf,
+ *   Bilder werden per clip-path aufgedeckt, Texte faden hoch. Alles einmalig.
+ * - Keine Endlos-Animationen; nichts bewegt sich, solange nicht gescrollt wird.
+ *
+ * Barrierefreiheit: Die zerlegte Hero-Headline ist aria-hidden, eine
+ * .visually-hidden-Kopie liefert Screenreadern den Satz am Stück.
  */
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
-import { $, $$ } from './utils.js';
+import { $$ } from './utils.js';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -24,8 +26,9 @@ export function heroIntro({ reduced }) {
     return;
   }
   gsap.timeline()
+    .fromTo('.hero__photo', { scale: 1.08 }, { scale: 1, duration: 2.4, ease: 'expo.out' }, 0)
     .fromTo(heroChars,
-      { autoAlpha: 0, yPercent: 60, filter: 'blur(14px)' },
+      { autoAlpha: 0, yPercent: 60, filter: 'blur(12px)' },
       { autoAlpha: 1, yPercent: 0, filter: 'blur(0px)', duration: 1.3, ease: 'expo.out', stagger: { each: 0.035, from: 'start' },
         onComplete: () => gsap.set(heroChars, { clearProps: 'filter,willChange' }) }, 0.1)
     // opacity statt autoAlpha: Links/Buttons bleiben während der Einblendung per Tastatur erreichbar
@@ -33,9 +36,8 @@ export function heroIntro({ reduced }) {
     .fromTo('.nav > *', { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 1, ease: 'expo.out', stagger: 0.06 }, 0.4);
 }
 
-/** Wird einmal nach dem Preloader aufgerufen. `getScene()` liefert die 3D-Szene oder null. */
-export function setupAnimations({ reduced, getScene }) {
-  // Hero-Headline in Zeichen zerlegen (Startzustand: unsichtbar)
+/** Wird einmal nach dem Preloader aufgerufen (nach setupClimbStory, damit der Pin zuerst existiert). */
+export function setupAnimations({ reduced }) {
   $$('.hero__title [data-split="chars"]').forEach((el) => {
     const split = new SplitText(el, { type: 'chars,words', charsClass: 'char', aria: 'none' });
     heroChars.push(...split.chars);
@@ -44,79 +46,63 @@ export function setupAnimations({ reduced, getScene }) {
 
   if (reduced) {
     gsap.set('.reveal-up, .reveal-fade', { autoAlpha: 1 });
-    setupCounters({ reduced });
-    getScene()?.measure();
     return;
   }
+
+  // Hero -> Aufstieg: Text weicht nach oben, Foto zoomt leicht und dunkelt ab
+  const heroST = { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true };
+  // opacity statt autoAlpha: h1 + Links bleiben im Accessibility-Tree und fokussierbar
+  gsap.to('.hero__inner', { yPercent: -12, opacity: 0, ease: 'power1.in', scrollTrigger: heroST });
+  gsap.to('.hero__media', { scale: 1.06, ease: 'none', scrollTrigger: heroST });
+  gsap.to('.hero__scrim', { backgroundColor: 'rgba(11,18,25,.7)', ease: 'none', scrollTrigger: heroST });
+
+  // Aufstieg: Titel einmalig einblenden, wenn die Bühne erscheint
+  // opacity statt autoAlpha: Überschrift bleibt im Accessibility-Tree (Lighthouse heading-order)
+  gsap.from('.climb__head > *', {
+    opacity: 0, y: 30, duration: 1.1, ease: 'expo.out', stagger: 0.08,
+    scrollTrigger: { trigger: '#aufstieg', start: 'top 60%', once: true },
+  });
+
+  // Trennlinien der Abschnitte zeichnen sich beim Eintritt
+  $$('main .section').forEach((sec) => {
+    gsap.fromTo(sec, { '--seam': 0 }, {
+      '--seam': 1, duration: 1.4, ease: 'expo.inOut',
+      scrollTrigger: { trigger: sec, start: 'top 85%', once: true },
+    });
+  });
 
   // Abschnittstitel: maskierte Zeilen-Reveals (autoSplit teilt bei Resize neu)
   $$('[data-split="lines"]').forEach((el) => {
     SplitText.create(el, {
       type: 'lines', mask: 'lines', linesClass: 'split-line-inner', autoSplit: true,
       onSplit: (self) => gsap.from(self.lines, {
-        yPercent: 110, rotate: 2, duration: 1.3, ease: 'expo.out', stagger: 0.1,
+        yPercent: 110, duration: 1.2, ease: 'expo.out', stagger: 0.09,
         scrollTrigger: { trigger: el, start: 'top 85%', once: true },
       }),
     });
   });
 
-  // Fade-up-Reveals in Gruppen
+  // Bilder: clip-path deckt von unten auf, Bild setzt sich aus leichtem Zoom
+  $$('.reveal-img').forEach((fig) => {
+    const pic = fig.querySelector('picture');
+    const img = fig.querySelector('img');
+    gsap.timeline({ scrollTrigger: { trigger: fig, start: 'top 85%', once: true } })
+      .fromTo(pic, { clipPath: 'inset(100% 0% 0% 0% round 14px)' }, { clipPath: 'inset(0% 0% 0% 0% round 14px)', duration: 1.3, ease: 'expo.inOut' })
+      .fromTo(img, { scale: 1.18 }, { scale: 1, duration: 1.8, ease: 'expo.out' }, 0.15)
+      .fromTo(fig.querySelector('figcaption'), { opacity: 0 }, { opacity: 1, duration: 0.6 }, 0.9); // Bildnachweis bleibt für Screenreader lesbar
+  });
+
+  // Texte in Gruppen: Fade-up
   ScrollTrigger.batch('main .reveal-up', {
     start: 'top 88%', once: true,
-    onEnter: (els) => gsap.fromTo(els, { autoAlpha: 0, y: 50 }, { autoAlpha: 1, y: 0, duration: 1.2, ease: 'expo.out', stagger: 0.09, overwrite: true }),
+    onEnter: (els) => gsap.fromTo(els, { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 1.1, ease: 'expo.out', stagger: 0.08, overwrite: true }),
   });
 
-  // Prozess: Linie zeichnet sich
-  gsap.to('.process__line span', {
-    scaleX: 1, ease: 'none',
-    scrollTrigger: { trigger: '.process__steps', start: 'top 75%', end: 'bottom 60%', scrub: 0.8 },
-  });
-
-  // Hero-Foto: Tiefen-Parallaxe (Foto langsamer als Text, leichter Zoom)
-  gsap.fromTo('.hero__photo picture', { yPercent: 0, scale: 1.04 }, {
-    yPercent: 18, scale: 1.12, ease: 'none',
-    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
-  });
-
-  // Fotos: Bild bewegt sich innerhalb seines Rahmens (Parallaxe ohne Layout-Verschiebung)
-  $$('.tour__photo, .band__figure, .g').forEach((fig) => {
-    const pic = $('picture', fig);
-    if (!pic) return;
-    fig.classList.add('is-parallax');
-    gsap.fromTo($('img', pic), { yPercent: -6 }, {
-      yPercent: 6, ease: 'none',
-      scrollTrigger: { trigger: fig, start: 'top bottom', end: 'bottom top', scrub: true },
-    });
-  });
-
-  // Hero-Headline driftet beim Scrollen nach oben weg
-  gsap.to('.hero__title', {
-    yPercent: -18, autoAlpha: 0.15, ease: 'none',
-    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
-  });
-
-  // Footer-Wortmarke wächst herein
+  // Footer-Wortmarke wächst herein (nur beim Scrollen)
   gsap.fromTo('.footer__word', { yPercent: 35, scaleY: 1.25, transformOrigin: '50% 100%' }, {
     yPercent: 0, scaleY: 1, ease: 'none',
     scrollTrigger: { trigger: '.footer', start: 'top bottom', end: 'bottom bottom', scrub: true },
   });
 
-  setupCounters({ reduced });
-  ScrollTrigger.addEventListener('refresh', () => getScene()?.measure());
   ScrollTrigger.refresh();
-}
-
-/** Zähler: Endwerte stehen im HTML (ohne JS korrekt), JS zählt beim Erscheinen hoch. */
-function setupCounters({ reduced }) {
-  if (reduced) return;
-  $$('[data-count]').forEach((el) => {
-    const end = Number(el.dataset.count);
-    const suffix = el.dataset.suffix || '';
-    const o = { v: 0 };
-    el.textContent = '0' + suffix;
-    ScrollTrigger.create({
-      trigger: el, start: 'top 90%', once: true,
-      onEnter: () => gsap.to(o, { v: end, duration: 2, ease: 'power3.out', onUpdate: () => { el.textContent = Math.round(o.v) + suffix; } }),
-    });
-  });
 }

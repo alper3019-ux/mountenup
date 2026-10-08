@@ -18,6 +18,7 @@ const compressible = new Set(['.html', '.js', '.css', '.svg', '.json', '.xml', '
 
 http.createServer(async (req, res) => {
   let path = normalize(decodeURIComponent(new URL(req.url, 'http://x').pathname)).replace(/^(\.\.[/\\])+/, '');
+  if (BASE && (path === BASE || path.startsWith(BASE + '/'))) path = path.slice(BASE.length) || '/';
   if (path.endsWith('/')) path += 'index.html';
   let file = join(root, path);
   let status = 200;
