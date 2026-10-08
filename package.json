@@ -1,0 +1,32 @@
+{
+  "name": "mountenup-website",
+  "version": "1.0.0",
+  "description": "MountenUp! \u2013 Demo-Website eines Bergsport-Anbieters (Vite, Three.js, GSAP, Lenis)",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173 --strictPort",
+    "screenshots": "node scripts/screenshots.mjs",
+    "audit": "node scripts/audit.mjs",
+    "icons": "node scripts/make-icons.mjs"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "gsap": "^3.15.0",
+    "lenis": "^1.3.26",
+    "three": "^0.186.1"
+  },
+  "devDependencies": {
+    "axe-core": "^4.14.0",
+    "lighthouse": "^13.5.0",
+    "playwright": "^1.64.0",
+    "sharp": "^0.35.5",
+    "vite": "^8.3.4"
+  },
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  }
+}

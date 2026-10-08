@@ -1,0 +1,8 @@
+/* Einstiegspunkt aller Styles (wird von src/main.js bzw. src/legal.js importiert).
+   Reihenfolge ist wichtig: Tokens -> Komponenten -> Sektionen -> Breakpoints. */
+@import './fonts.css';
+@import './base.css';
+@import './components.css';
+@import './sections.css';
+@import './pages.css';
+@import './responsive.css';

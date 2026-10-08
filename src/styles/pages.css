@@ -1,0 +1,16 @@
+/* ======================================================================
+   Unterseiten: Impressum, Datenschutz, 404
+   ====================================================================== */
+
+/* ---------- Legal pages ---------- */
+.legal { max-width: 860px; margin: 0 auto; padding: 9rem var(--pad) 6rem; position: relative; z-index: 2; }
+.legal h1 { font-size: clamp(2.6rem, 7vw, 5rem); font-weight: 500; letter-spacing: -0.05em; line-height: .95; margin-bottom: 2.5rem; }
+.legal h2 { font-size: 1.35rem; font-weight: 500; letter-spacing: -0.02em; margin: 2.6rem 0 .8rem; }
+.legal p, .legal li { color: var(--muted); }
+.legal p + p { margin-top: .9rem; }
+.legal a { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; }
+.legal .note { margin-top: 3rem; padding: 1.2rem 1.4rem; border: 1px solid var(--line); border-radius: 16px; font-size: .9rem; }
+.legal-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 1.2rem var(--pad); background: rgba(11,18,25,.6); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.page-404 { min-height: 100svh; display: grid; place-content: center; text-align: center; gap: 1.6rem; padding: var(--pad); position: relative; z-index: 2; }
+.page-404 h1 { font-size: clamp(6rem, 24vw, 18rem); font-weight: 500; letter-spacing: -0.07em; line-height: .8; background: linear-gradient(120deg, var(--fg), var(--accent)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.page-404 p { color: var(--muted); }

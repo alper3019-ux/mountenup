@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>MountenUp! — Bergtouren, Kletterkurse &amp; Expeditionen</title>
+  <meta name="description" content="MountenUp! führt geführte Bergtouren, Kletterkurse und Expeditionen in den Alpen und im Himalaya. Kleine Gruppen, zertifizierte Bergführer – ein Demonstrationsprojekt." />
+  <meta name="theme-color" content="#0b1219" />
+  <link rel="canonical" href="%VITE_SITE_URL%" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="MountenUp!" />
+  <meta property="og:locale" content="de_DE" />
+  <meta property="og:title" content="MountenUp! — Höher, als du denkst." />
+  <meta property="og:description" content="Geführte Bergtouren, Kletterkurse und Expeditionen. Kleine Gruppen, klare Planung." />
+  <meta property="og:url" content="%VITE_SITE_URL%" />
+  <meta property="og:image" content="%VITE_SITE_URL%og.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Bergsteiger auf einem schmalen Grat im Monte-Rosa-Massiv im Wallis kurz vor Sonnenaufgang." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="/favicon.ico" sizes="32x32" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="preload" href="/src/assets/fonts/inter-tight-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <!-- LCP-Bild früh laden; imagesrcset/imagesizes wählen dieselbe Datei wie das <picture> (web.dev: Preload responsive images) -->
+  <link rel="preload" as="image" type="image/avif" media="(min-width: 861px)" imagesrcset="/photos/hero-960.avif 960w, /photos/hero-1440.avif 1440w, /photos/hero-1920.avif 1920w, /photos/hero-2560.avif 2560w" imagesizes="100vw" fetchpriority="high" />
+  <link rel="preload" as="image" type="image/avif" media="(max-width: 860px)" imagesrcset="/photos/hero-portrait-480.avif 480w, /photos/hero-portrait-720.avif 720w, /photos/hero-portrait-1080.avif 1080w" imagesizes="100vw" fetchpriority="high" />
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Organization","name":"MountenUp!","url":"%VITE_SITE_URL%","logo":"%VITE_SITE_URL%logo.png","description":"Demonstrationsprojekt: geführte Bergtouren, Kletterkurse und Expeditionen."}
+  </script>
+</head>
+<body class="is-loading">
+  <a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+  <div class="preloader" aria-hidden="true">
+    <div class="preloader__inner">
+      <div class="preloader__brand"><span>MountenUp!</span></div>
+      <div class="preloader__count"><span class="preloader__num">000</span></div>
+      <div class="preloader__bar"><span></span></div>
+      <p class="preloader__note mono">Höhenmeter werden geladen</p>
+    </div>
+  </div>
+
+  <canvas class="webgl" aria-hidden="true"></canvas>
+  <div class="webgl-fallback" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="nav">
+    <a href="#top" class="nav__logo" data-scroll aria-label="MountenUp! – zur Startseite">MountenUp!</a>
+    <nav class="nav__links" aria-label="Hauptnavigation">
+      <a href="#touren" data-scroll>Touren</a>
+      <a href="#warum" data-scroll>Warum wir</a>
+      <a href="#galerie" data-scroll>Galerie</a>
+      <a href="#ablauf" data-scroll>Ablauf</a>
+    </nav>
+    <button class="motion-toggle" type="button" aria-pressed="false" aria-label="Animationen pausieren" title="Animationen pausieren"><span class="motion-toggle__icon" aria-hidden="true"></span></button>
+    <a href="#kontakt" class="btn btn--small nav__cta" data-scroll><span class="btn__label">Tour anfragen</span></a>
+    <button class="nav__burger" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
+  </header>
+
+  <div class="menu" id="menu" aria-hidden="true">
+    <nav class="menu__links" aria-label="Mobile Navigation">
+      <a href="#touren" data-scroll><span class="mono">01</span>Touren</a>
+      <a href="#warum" data-scroll><span class="mono">02</span>Warum wir</a>
+      <a href="#galerie" data-scroll><span class="mono">03</span>Galerie</a>
+      <a href="#ablauf" data-scroll><span class="mono">04</span>Ablauf</a>
+      <a href="#stimmen" data-scroll><span class="mono">05</span>Stimmen</a>
+      <a href="#kontakt" data-scroll><span class="mono">06</span>Kontakt</a>
+    </nav>
+    <p class="menu__foot mono">Platzhalter-Adresse · hallo@mountenup.example</p>
+  </div>
+
+  <main id="main">
+    <section class="hero" id="top" data-scene="hero">
+      <div class="hero__media"><div class="hero__photo">
+        <picture class="hero-photo"><source media="(max-width: 860px)" type="image/avif" srcset="/photos/hero-portrait-480.avif 480w, /photos/hero-portrait-720.avif 720w, /photos/hero-portrait-1080.avif 1080w" sizes="100vw"><source media="(max-width: 860px)" type="image/webp" srcset="/photos/hero-portrait-480.webp 480w, /photos/hero-portrait-720.webp 720w, /photos/hero-portrait-1080.webp 1080w" sizes="100vw"><source type="image/avif" srcset="/photos/hero-960.avif 960w, /photos/hero-1440.avif 1440w, /photos/hero-1920.avif 1920w, /photos/hero-2560.avif 2560w" sizes="100vw"><source type="image/webp" srcset="/photos/hero-960.webp 960w, /photos/hero-1440.webp 1440w, /photos/hero-1920.webp 1920w, /photos/hero-2560.webp 2560w" sizes="100vw"><img src="/photos/hero-1920.webp" width="1920" height="1280" alt="Bergsteiger auf dem Grat der Cresta Signal im Monte-Rosa-Massiv, Wallis, Schweiz, kurz vor Sonnenaufgang." fetchpriority="high" decoding="async"></picture>
+      </div><div class="hero__scrim"></div></div>
+      <div class="hero__content">
+      <div class="hero__meta mono reveal-fade">
+        <span>Bergführer-Team — Alpen &amp; Himalaya</span>
+        <span class="hero__clock"><i class="dot"></i><span data-clock>--:--</span> MEZ</span>
+      </div>
+      <h1 class="hero__title">
+        <span class="line" data-split="chars" aria-hidden="true">Höher,</span>
+        <span class="line" data-split="chars" aria-hidden="true">als du <em>denkst.</em></span>
+        <span class="visually-hidden">Höher, als du denkst.</span>
+      </h1>
+      <div class="hero__bottom">
+        <p class="hero__lead reveal-fade">MountenUp! führt kleine Gruppen auf Gletscher, an Fels und auf Achttausender-Vorbereitungstouren. Sicher, ruhig und mit Leuten, die den Berg kennen.</p>
+        <div class="hero__actions reveal-fade">
+          <a href="#touren" class="btn" data-scroll><span class="btn__label">Touren ansehen</span><span class="btn__icon" aria-hidden="true">→</span></a>
+          <a href="#kontakt" class="link-underline" data-scroll>Unverbindlich anfragen</a>
+        </div>
+      </div>
+      <div class="hero__hint mono reveal-fade" aria-hidden="true"><span class="hero__hint-line"></span>Scrollen</div>
+      </div>
+    </section>
+
+    <section class="clients" aria-label="Tourengebiete">
+      <p class="eyebrow mono">Unsere Gebiete</p>
+      <div class="marquee">
+        <div class="marquee__track">
+          <span>Wallis</span><span>Berner Oberland</span><span>Dolomiten</span><span>Mont Blanc</span><span>Hohe Tauern</span><span>Khumbu</span><span>Zermatt</span><span>Chamonix</span>
+          <span aria-hidden="true">Wallis</span><span aria-hidden="true">Berner Oberland</span><span aria-hidden="true">Dolomiten</span><span aria-hidden="true">Mont Blanc</span><span aria-hidden="true">Hohe Tauern</span><span aria-hidden="true">Khumbu</span><span aria-hidden="true">Zermatt</span><span aria-hidden="true">Chamonix</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="services section" id="touren" data-scene="touren">
+      <div class="section__head">
+        <p class="eyebrow mono"><span class="idx">01</span> Touren &amp; Angebote</p>
+        <h2 class="section__title" data-split="lines">Drei Wege<br />nach <em>oben.</em></h2>
+        <p class="section__intro reveal-up">Alle Preise sind Beispielwerte für diese Demo und keine echten Angebote. Kondition und Vorkenntnisse klären wir vor der Buchung persönlich.</p>
+      </div>
+      <ol class="tours">
+        <li class="tour reveal-up">
+          <figure class="tour__photo"><picture class=""><source type="image/avif" srcset="/photos/tour-hochtour-480.avif 480w, /photos/tour-hochtour-800.avif 800w, /photos/tour-hochtour-1200.avif 1200w" sizes="(min-width: 861px) 33vw, 100vw"><source type="image/webp" srcset="/photos/tour-hochtour-480.webp 480w, /photos/tour-hochtour-800.webp 800w, /photos/tour-hochtour-1200.webp 1200w" sizes="(min-width: 861px) 33vw, 100vw"><img src="/photos/tour-hochtour-1200.webp" width="1200" height="1500" alt="Bergsteigerinnen und Bergsteiger mit Seil verlassen die Bergstation der Aiguille du Midi oberhalb von Chamonix, Frankreich." sizes="(min-width: 861px) 33vw, 100vw" loading="lazy" decoding="async"></picture>
+            <figcaption class="mono">Aiguille du Midi, Chamonix · Foto: Benh LIEU SONG, CC BY-SA 3.0</figcaption>
+          </figure>
+          <div class="tour__body">
+            <span class="mono tour__tag">01 · Hochtour</span>
+            <h3>Gletscher &amp; Viertausender</h3>
+            <p>Dreitägige Hochtouren im Wallis und am Mont Blanc: Spaltenkunde, Seilschaft und ein Gipfel, der zu Ihrer Erfahrung passt.</p>
+            <ul class="tags mono"><li>3 Tage</li><li>max. 4 Personen</li><li>ab 890 € <span class="tag-note">Beispiel</span></li></ul>
+          </div>
+        </li>
+        <li class="tour reveal-up">
+          <figure class="tour__photo"><picture class=""><source type="image/avif" srcset="/photos/tour-klettern-480.avif 480w, /photos/tour-klettern-800.avif 800w, /photos/tour-klettern-1200.avif 1200w" sizes="(min-width: 861px) 33vw, 100vw"><source type="image/webp" srcset="/photos/tour-klettern-480.webp 480w, /photos/tour-klettern-800.webp 800w, /photos/tour-klettern-1200.webp 1200w" sizes="(min-width: 861px) 33vw, 100vw"><img src="/photos/tour-klettern-1200.webp" width="1200" height="1500" alt="Kletterin an einer überhängenden Kalkwand am Strand Phra Nang, Krabi, Thailand." sizes="(min-width: 861px) 33vw, 100vw" loading="lazy" decoding="async"></picture>
+            <figcaption class="mono">Phra Nang, Krabi · Foto: kallerna, CC BY-SA 3.0</figcaption>
+          </figure>
+          <div class="tour__body">
+            <span class="mono tour__tag">02 · Kletterkurs</span>
+            <h3>Felsklettern, vom Einstieg an</h3>
+            <p>Zwei Tage am Fels: Sicherung, Knoten und die ersten selbstständigen Seillängen. Für Einsteigerinnen und Einsteiger, keine Vorkenntnisse nötig.</p>
+            <ul class="tags mono"><li>2 Tage</li><li>max. 5 Personen</li><li>ab 320 € <span class="tag-note">Beispiel</span></li></ul>
+          </div>
+        </li>
+        <li class="tour reveal-up">
+          <figure class="tour__photo"><picture class=""><source type="image/avif" srcset="/photos/tour-expedition-480.avif 480w, /photos/tour-expedition-800.avif 800w, /photos/tour-expedition-1200.avif 1200w" sizes="(min-width: 861px) 33vw, 100vw"><source type="image/webp" srcset="/photos/tour-expedition-480.webp 480w, /photos/tour-expedition-800.webp 800w, /photos/tour-expedition-1200.webp 1200w" sizes="(min-width: 861px) 33vw, 100vw"><img src="/photos/tour-expedition-1200.webp" width="1200" height="1500" alt="Bergsteiger auf den letzten Metern zum Gipfel des Imja Tse (Island Peak, 6189 m) in Nepal." sizes="(min-width: 861px) 33vw, 100vw" loading="lazy" decoding="async"></picture>
+            <figcaption class="mono">Imja Tse, Nepal · Foto: Mountaineer, CC BY 3.0</figcaption>
+          </figure>
+          <div class="tour__body">
+            <span class="mono tour__tag">03 · Expedition</span>
+            <h3>Trekking &amp; Sechstausender</h3>
+            <p>Drei Wochen Khumbu: Akklimatisation, Island Peak oder Lobuche als Ziel und ein Tempo, das die Gruppe gemeinsam trägt.</p>
+            <ul class="tags mono"><li>18–22 Tage</li><li>max. 8 Personen</li><li>ab 4.900 € <span class="tag-note">Beispiel</span></li></ul>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="band" aria-label="Matterhorn">
+      <figure class="band__figure"><picture class=""><source type="image/avif" srcset="/photos/band-matterhorn-960.avif 960w, /photos/band-matterhorn-1600.avif 1600w, /photos/band-matterhorn-2400.avif 2400w" sizes="100vw"><source type="image/webp" srcset="/photos/band-matterhorn-960.webp 960w, /photos/band-matterhorn-1600.webp 1600w, /photos/band-matterhorn-2400.webp 2400w" sizes="100vw"><img src="/photos/band-matterhorn-2400.webp" width="2400" height="1600" alt="Das Matterhorn bei Zermatt im Wallis, Schweiz, unter klarem Himmel." sizes="100vw" loading="lazy" decoding="async"></picture>
+        <figcaption class="mono">Matterhorn, Wallis · Foto: Liridon, CC BY-SA 4.0</figcaption>
+      </figure>
+    </section>
+
+    <section class="services section" id="warum" data-scene="warum">
+      <div class="section__head">
+        <p class="eyebrow mono"><span class="idx">02</span> Warum MountenUp!</p>
+        <h2 class="section__title" data-split="lines">Sicherheit ist<br />kein <em>Extra.</em></h2>
+      </div>
+      <ul class="values">
+        <li class="reveal-up"><span class="mono">01</span><div><h3>Kleine Gruppen</h3><p>Höchstens vier Personen pro Bergführerin oder Bergführer auf Hochtour, damit Entscheidungen am Berg schnell und klar bleiben.</p></div></li>
+        <li class="reveal-up"><span class="mono">02</span><div><h3>Ausgebildete Bergführer</h3><p>Unser Anspruch: staatlich geprüfte Berg- und Skiführer. Namen und konkrete Qualifikationen sind in dieser Demo Platzhalter und stehen im Impressum als solche.</p></div></li>
+        <li class="reveal-up"><span class="mono">03</span><div><h3>Ehrliche Tourenplanung</h3><p>Wetterfenster, Gruppenform und Material entscheiden über den Gipfel – nicht der Prospekt. Umkehr ist Teil des Plans.</p></div></li>
+        <li class="reveal-up"><span class="mono">04</span><div><h3>Ausrüstung, die passt</h3><p>Steigeisen, Gurte und Helme stellen wir. Was Sie selbst brauchen, steht in der Packliste, die Sie vor der Tour bekommen.</p></div></li>
+      </ul>
+    </section>
+
+    <section class="gallery section" id="galerie" data-scene="galerie">
+      <div class="section__head">
+        <p class="eyebrow mono"><span class="idx">03</span> Galerie</p>
+        <h2 class="section__title" data-split="lines">Berge, die wir<br /><em>wirklich</em> meinen.</h2>
+        <p class="section__intro reveal-up">Echte Fotografien von Wikimedia Commons, selbst gehostet. Jede Aufnahme ist unter dem Bild und auf der Seite <a href="%BASE_URL%bildrechte.html">Bildrechte</a> mit Fotograf, Quelle und Lizenz genannt.</p>
+      </div>
+      <div class="gallery__grid">
+        <figure class="g g--wide reveal-up"><picture class=""><source type="image/avif" srcset="/photos/gal-gorner-960.avif 960w, /photos/gal-gorner-1600.avif 1600w, /photos/gal-gorner-2400.avif 2400w" sizes="(min-width: 861px) 66vw, 100vw"><source type="image/webp" srcset="/photos/gal-gorner-960.webp 960w, /photos/gal-gorner-1600.webp 1600w, /photos/gal-gorner-2400.webp 2400w" sizes="(min-width: 861px) 66vw, 100vw"><img src="/photos/gal-gorner-2400.webp" width="2400" height="1091" alt="Gorner- und Grenzgletscher mit Monte Rosa und Matterhorn, gesehen vom Gornergrat, Wallis, Schweiz." sizes="(min-width: 861px) 66vw, 100vw" loading="lazy" decoding="async"></picture><figcaption class="mono">Gorner- und Grenzgletscher, Wallis · Ximonic (Simo Räsänen), CC BY-SA 3.0</figcaption></figure>
+        <figure class="g reveal-up"><picture class=""><source type="image/avif" srcset="/photos/gal-amadablam-640.avif 640w, /photos/gal-amadablam-1024.avif 1024w, /photos/gal-amadablam-1600.avif 1600w" sizes="(min-width: 861px) 40vw, 100vw"><source type="image/webp" srcset="/photos/gal-amadablam-640.webp 640w, /photos/gal-amadablam-1024.webp 1024w, /photos/gal-amadablam-1600.webp 1600w" sizes="(min-width: 861px) 40vw, 100vw"><img src="/photos/gal-amadablam-1600.webp" width="1600" height="1067" alt="Der Gipfel Ama Dablam (6812 m) vom Chola-Tal aus, Khumbu, Nepal." sizes="(min-width: 861px) 40vw, 100vw" loading="lazy" decoding="async"></picture><figcaption class="mono">Ama Dablam, Nepal · Vyacheslav Argenberg, CC BY 4.0</figcaption></figure>
+        <figure class="g reveal-up"><picture class=""><source type="image/avif" srcset="/photos/gal-riffelsee-480.avif 480w, /photos/gal-riffelsee-800.avif 800w, /photos/gal-riffelsee-1200.avif 1200w" sizes="(min-width: 861px) 33vw, 100vw"><source type="image/webp" srcset="/photos/gal-riffelsee-480.webp 480w, /photos/gal-riffelsee-800.webp 800w, /photos/gal-riffelsee-1200.webp 1200w" sizes="(min-width: 861px) 33vw, 100vw"><img src="/photos/gal-riffelsee-1200.webp" width="1200" height="1818" alt="Das Matterhorn spiegelt sich im Riffelsee oberhalb von Zermatt, Schweiz." sizes="(min-width: 861px) 33vw, 100vw" loading="lazy" decoding="async"></picture><figcaption class="mono">Riffelsee, Zermatt · Dirk Beyer, CC BY-SA 3.0</figcaption></figure>
+        <figure class="g g--wide reveal-up"><picture class=""><source type="image/avif" srcset="/photos/gal-sella-960.avif 960w, /photos/gal-sella-1600.avif 1600w, /photos/gal-sella-2400.avif 2400w" sizes="(min-width: 861px) 58vw, 100vw"><source type="image/webp" srcset="/photos/gal-sella-960.webp 960w, /photos/gal-sella-1600.webp 1600w, /photos/gal-sella-2400.webp 2400w" sizes="(min-width: 861px) 58vw, 100vw"><img src="/photos/gal-sella-2400.webp" width="2400" height="1091" alt="Die Sellagruppe in den Dolomiten, Südtirol, im Winter." sizes="(min-width: 861px) 58vw, 100vw" loading="lazy" decoding="async"></picture><figcaption class="mono">Sellagruppe, Dolomiten · Wolfgang Moroder, CC BY-SA 3.0</figcaption></figure>
+        <figure class="g reveal-up"><picture class=""><source type="image/avif" srcset="/photos/gal-zermatt-640.avif 640w, /photos/gal-zermatt-1024.avif 1024w, /photos/gal-zermatt-1600.avif 1600w" sizes="(min-width: 861px) 40vw, 100vw"><source type="image/webp" srcset="/photos/gal-zermatt-640.webp 640w, /photos/gal-zermatt-1024.webp 1024w, /photos/gal-zermatt-1600.webp 1600w" sizes="(min-width: 861px) 40vw, 100vw"><img src="/photos/gal-zermatt-1600.webp" width="1600" height="1067" alt="Wanderweg oberhalb von Zermatt mit Blick auf das Matterhorn, Wallis, Schweiz." sizes="(min-width: 861px) 40vw, 100vw" loading="lazy" decoding="async"></picture><figcaption class="mono">Wanderweg bei Zermatt · Roy Egloff, CC BY-SA 4.0</figcaption></figure>
+        <figure class="g reveal-up"><picture class=""><source type="image/avif" srcset="/photos/gal-chola-640.avif 640w, /photos/gal-chola-1024.avif 1024w, /photos/gal-chola-1600.avif 1600w" sizes="(min-width: 861px) 50vw, 100vw"><source type="image/webp" srcset="/photos/gal-chola-640.webp 640w, /photos/gal-chola-1024.webp 1024w, /photos/gal-chola-1600.webp 1600w" sizes="(min-width: 861px) 50vw, 100vw"><img src="/photos/gal-chola-1600.webp" width="1600" height="1067" alt="Verschneite Berge und Bergsee im Chola-Tal, Nepal, auf 5200 Metern." sizes="(min-width: 861px) 50vw, 100vw" loading="lazy" decoding="async"></picture><figcaption class="mono">Chola-Tal, Nepal · Vyacheslav Argenberg, CC BY 4.0</figcaption></figure>
+        <figure class="g reveal-up"><picture class=""><source type="image/avif" srcset="/photos/gal-tous-480.avif 480w, /photos/gal-tous-800.avif 800w, /photos/gal-tous-1200.avif 1200w" sizes="(min-width: 861px) 33vw, 100vw"><source type="image/webp" srcset="/photos/gal-tous-480.webp 480w, /photos/gal-tous-800.webp 800w, /photos/gal-tous-1200.webp 1200w" sizes="(min-width: 861px) 33vw, 100vw"><img src="/photos/gal-tous-1200.webp" width="1200" height="1200" alt="Schwarzweißaufnahme „Tõus“ (Aufstieg, 1983): Seilschaft am Grat im Ullu-Tau-Massiv, Kaukasus." sizes="(min-width: 861px) 33vw, 100vw" loading="lazy" decoding="async"></picture><figcaption class="mono">„Tõus“, Kaukasus · Jaan Künnap, CC BY-SA 4.0</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="process section" id="ablauf" data-scene="ablauf">
+      <div class="section__head">
+        <p class="eyebrow mono"><span class="idx">04</span> Ablauf</p>
+        <h2 class="section__title" data-split="lines">Vom ersten Anruf<br />bis zum <em>Gipfel.</em></h2>
+      </div>
+      <div class="process__steps">
+        <div class="process__line" aria-hidden="true"><span></span></div>
+        <div class="step reveal-up"><span class="step__num mono">Schritt 01</span><h3>Gespräch</h3><p>Sie erzählen, wohin es gehen soll und wie fit Sie sind. Wir sagen ehrlich, ob die Tour passt.</p></div>
+        <div class="step reveal-up"><span class="step__num mono">Schritt 02</span><h3>Planung</h3><p>Termin, Hütte, Materialliste und ein Wetterplan B. Sie bekommen alles schriftlich.</p></div>
+        <div class="step reveal-up"><span class="step__num mono">Schritt 03</span><h3>Am Berg</h3><p>Frühstart, ruhiges Tempo, klare Ansagen. Pausen dort, wo die Aussicht es wert ist.</p></div>
+        <div class="step reveal-up"><span class="step__num mono">Schritt 04</span><h3>Danach</h3><p>Kurzes Gespräch am Abend: Was lief gut, was wäre der nächste sinnvolle Schritt.</p></div>
+      </div>
+    </section>
+
+    <section class="studio section" id="stimmen" data-scene="stimmen">
+      <div class="studio__grid">
+        <div>
+          <p class="eyebrow mono"><span class="idx">05</span> Stimmen</p>
+          <h2 class="section__title" data-split="lines">Was Gäste<br /><em>sagen würden.</em></h2>
+        </div>
+        <div class="studio__text">
+          <p class="reveal-up">MountenUp! ist ein Demonstrationsprojekt. Die folgenden Stimmen, Namen und Zahlen sind erfunden und dienen nur als Gestaltungsmuster.</p>
+        </div>
+      </div>
+      <div class="quotes">
+        <figure class="quote reveal-up"><blockquote>„Zum ersten Mal habe ich mich am Gletscher nicht hektisch gefühlt. Alles war erklärt, nichts wurde überspielt.“</blockquote><figcaption class="mono">Platzhalter — Anna K., Hochtour Wallis</figcaption></figure>
+        <figure class="quote reveal-up"><blockquote>„Der Kletterkurs hat mir das Sichern so beigebracht, dass ich danach selbstständig weiterüben konnte.“</blockquote><figcaption class="mono">Platzhalter — Markus T., Kletterkurs</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="contact section" id="kontakt" data-scene="kontakt">
+      <div class="contact__head">
+        <p class="eyebrow mono"><span class="idx">06</span> Kontakt</p>
+        <h2 class="contact__title" data-split="lines">Wohin soll<br />es <em>gehen?</em></h2>
+      </div>
+      <div class="contact__grid">
+        <div class="contact__info reveal-up">
+          <p>Schreiben Sie uns, welche Tour Sie interessiert. In dieser Demo wird nichts versendet – der Hinweis steht direkt am Formular.</p>
+          <a class="contact__mail link-underline" href="mailto:hallo@mountenup.example">hallo@mountenup.example</a>
+          <a class="contact__phone link-underline" href="tel:+493012345678">+49 30 0000 0000</a>
+          <address class="mono">MountenUp! (Platzhalter)<br />Beispielweg 1<br />10115 Berlin</address>
+        </div>
+        <form class="form reveal-up" name="kontakt" method="POST" novalidate>
+          <div class="form__row">
+            <div class="field"><input id="f-name" name="name" type="text" placeholder=" " autocomplete="name" required aria-describedby="f-name-err" /><label for="f-name">Ihr Name</label><span class="field__error mono" id="f-name-err">Bitte geben Sie Ihren Namen an.</span></div>
+            <div class="field"><input id="f-mail" name="email" type="email" placeholder=" " autocomplete="email" required aria-describedby="f-mail-err" /><label for="f-mail">E-Mail-Adresse</label><span class="field__error mono" id="f-mail-err">Bitte geben Sie eine gültige E-Mail-Adresse an, z. B. name@firma.de.</span></div>
+          </div>
+          <fieldset class="chips">
+            <legend class="mono">Interesse</legend>
+            <label><input type="radio" name="budget" value="Hochtour" checked /><span>Hochtour</span></label>
+            <label><input type="radio" name="budget" value="Kletterkurs" /><span>Kletterkurs</span></label>
+            <label><input type="radio" name="budget" value="Expedition" /><span>Expedition</span></label>
+            <label><input type="radio" name="budget" value="Noch offen" /><span>Noch offen</span></label>
+          </fieldset>
+          <div class="field"><textarea id="f-msg" name="nachricht" rows="4" placeholder=" " required aria-describedby="f-msg-err"></textarea><label for="f-msg">Wohin soll es gehen?</label><span class="field__error mono" id="f-msg-err">Bitte beschreiben Sie kurz Ihr Vorhaben.</span></div>
+          <div class="check-wrap check"><label class="check__label"><input type="checkbox" name="datenschutz" required aria-describedby="f-privacy-err" /><span>Ich habe die <a href="%BASE_URL%datenschutz.html">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Angaben zu.</span></label><span class="field__error mono" id="f-privacy-err">Bitte bestätigen Sie die Datenschutzerklärung.</span></div>
+          <p class="form__note mono" id="form-note" hidden></p>
+          <div class="form__foot">
+            <button type="submit" class="btn btn--accent"><span class="btn__label">Anfrage senden</span><span class="btn__icon" aria-hidden="true">→</span></button>
+            <p class="form__status mono" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" data-scene="kontakt">
+    <div class="footer__top">
+      <p class="footer__claim">Der Berg bleibt. Wir auch.</p>
+      <button class="footer__totop link-underline mono" type="button">Nach oben ↑</button>
+    </div>
+    <div class="footer__word" aria-hidden="true">MOUNTENUP!</div>
+    <div class="footer__bottom mono">
+      <span>© <span data-year>2026</span> MountenUp! (Demo)</span>
+      <span>Fotos: Wikimedia Commons, siehe Bildrechte</span>
+      <span class="footer__legal"><a href="%BASE_URL%bildrechte.html">Bildrechte</a><a href="%BASE_URL%impressum.html">Impressum</a><a href="%BASE_URL%datenschutz.html">Datenschutz</a></span>
+    </div>
+    <p class="footer__demo mono">Demo-Projekt: MountenUp! sowie alle Preise, Bergführernamen, Qualifikationen, Adressen und Gästestimmen sind fiktive Platzhalter. Die Bergfotos sind echte Aufnahmen und einzeln lizenziert.</p>
+  </footer>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

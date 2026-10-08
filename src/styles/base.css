@@ -1,0 +1,73 @@
+/* ======================================================================
+   Basis: Design-Tokens (Farben, Schriften, Abstände), Reset, Utilities,
+   WebGL-Ebene und Atmosphäre. Für ein Rebranding zuerst :root anpassen.
+   ====================================================================== */
+
+:root {
+  /* Alpine, kalte Palette: Nachtblau, Gletschereis, Granit */
+  --bg: #0b1219;
+  --bg-2: #111b25;
+  --fg: #eef3f7;
+  --muted: rgba(238, 243, 247, 0.66);
+  /* Kontrast (WCAG 1.4.3) gegen --bg #0b1219 – Werte in reports/ANMERKUNGEN.md nachgerechnet */
+  --faint: rgba(238, 243, 247, 0.6);
+  --line: rgba(238, 243, 247, 0.14);
+  --accent: #9fd3f5;      /* Gletschereis */
+  --violet: #6f8fb0;      /* Granitblau (Name aus Kompatibilitätsgründen beibehalten) */
+  --cyan: #cfe8f7;
+  --pad: clamp(1.25rem, 4vw, 3.5rem);
+  --sans: 'Inter Tight', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --serif: 'Instrument Serif', 'Times New Roman', serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+/* scroll-padding: per Tab fokussierte Elemente landen nicht unter der fixen
+   Navigation (WCAG 2.4.11, Technik C43) */
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 6rem; }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: clip; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--sans);
+  font-size: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+body.is-loading { overflow: hidden; }
+::selection { background: var(--accent); color: #0b1219; }
+a { color: inherit; text-decoration: none; }
+img, svg, canvas { display: block; }
+h1, h2, h3, p { margin: 0; }
+em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: -0.01em; }
+.mono { font-family: var(--mono); font-weight: 400; font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip-link { position: fixed; left: 1rem; top: -3rem; z-index: 200; background: var(--fg); color: var(--bg); padding: .6rem 1rem; border-radius: 99px; transition: top .3s; }
+.skip-link:focus { top: 1rem; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+/* ---------- WebGL + atmosphere ---------- */
+.webgl { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.webgl-fallback { display: none; position: fixed; z-index: 0; pointer-events: none; left: 0; right: 0; bottom: 0; height: 42vh;
+  background: linear-gradient(180deg, #dfe8f0 0%, #8fa3b6 40%, #3b4a59 100%); clip-path: polygon(0 100%, 0 62%, 14% 40%, 24% 55%, 38% 18%, 47% 34%, 56% 8%, 68% 38%, 78% 26%, 90% 50%, 100% 36%, 100% 100%); opacity: .55; }
+.no-webgl .webgl-fallback { display: none; position: fixed; z-index: 0; pointer-events: none; left: 0; right: 0; bottom: 0; height: 42vh;
+  background: linear-gradient(180deg, #dfe8f0 0%, #8fa3b6 40%, #3b4a59 100%); clip-path: polygon(0 100%, 0 62%, 14% 40%, 24% 55%, 38% 18%, 47% 34%, 56% 8%, 68% 38%, 78% 26%, 90% 50%, 100% 36%, 100% 100%); opacity: .55; }
+.grain { position: fixed; inset: -50%; z-index: 90; pointer-events: none; opacity: .045; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 1.2s steps(6) infinite; }
+@keyframes grain { 0%,100% { transform: translate(0,0) } 20% { transform: translate(-3%,2%) } 40% { transform: translate(2%,-4%) } 60% { transform: translate(-4%,-1%) } 80% { transform: translate(3%,3%) } }
+
+/* Globaler Pause-Schalter (WCAG 2.2.2): stoppt alle CSS-Endlosanimationen.
+   Das WebGL-Objekt wird parallel in src/js/motion-toggle.js angehalten. */
+.motion-paused *, .motion-paused *::before, .motion-paused *::after { animation-play-state: paused !important; }
+
+/* Kein z-index auf <main>: Hero-Foto (z-index -1) liegt so hinter der WebGL-Ebene (Schneeflocken) */
+main { position: relative; }
+.footer { position: relative; z-index: 2; }
+
