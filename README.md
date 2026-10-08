@@ -35,7 +35,7 @@ Hinter den Inhalts-Sektionen liegt **kein** 3D – WebGL existiert nur in `#aufs
 - `src/js/climb-story.js`: ScrollTrigger pinnt `.climb__stage` (`pin`, `scrub: true`,
   `start: 'top top'`, Strecke 3,2 Bildschirmhöhen, mobil 2,6). Der Fortschritt 0…1 schaltet die
   vier Etappen-Texte, füllt den Höhenmesser und wird an die Szene übergeben.
-- `src/webgl/climb.js`: prozeduraler Berg (Heightfield, Facetten-Shading), Route als
+- `src/webgl/climb.js`: prozeduraler Berg (Heightfield, v3: weiches Shading, siehe unten), Route als
   `CatmullRomCurve3` über die Oberfläche, Figur aus Kapseln/Boxen (Helm, Rucksack, Pickel).
   Der Fortschritt wird exponentiell geglättet und über eine Tabelle (Mischung aus Weglänge und
   Höhengewinn) auf den Routenparameter abgebildet; `getPointAt()`/`getTangentAt()` liefern
@@ -49,7 +49,42 @@ Hinter den Inhalts-Sektionen liegt **kein** 3D – WebGL existiert nur in `#aufs
   Gipfel), alle vier Etappen als Karten sichtbar. Ohne WebGL: Matterhorn-Foto als Hintergrund.
 - Die Höhenangaben (2.150–4.164 m) sind illustrativ und als „Beispielroute“ markiert.
 
+### v3 – Optik der Kletter-Szene (nur `#aufstieg` geändert)
+
+- **Gelände:** 256×256-Raster (mobil 170), derivative-gedämpftes Fraktal-Rauschen mit ~37°
+  Domain-Rotation je Oktave, danach thermische (Talus-)Erosion, die Nadelspitzen abträgt;
+  abgerundeter, verbreiterter Gipfel-Plateau. Glatte Normalen statt Facetten.
+- **Shading** (`MeshStandardMaterial` + `onBeforeCompile`): Fels-/Geröllfarben nach Hangneigung,
+  verzogene Gesteinsbänder, Schnee nach Höhe *und* Flachheit mit Rausch-Rand, Mulden-
+  Abdunklung (gebackene Ambient Occlusion aus geglättetem Höhenfeld), feiner Bump über einen
+  Welt-Raum-Oberflächengradienten (nimmt mit der Distanz ab).
+- **Pfad:** Weg ist ins Gelände eingeschnitten (Absenkung + eigene Fels-/Schneefarbe) und mit
+  rot-weißen Markierungsstangen versehen; darüber ein schmales, warmes Leuchtband, das nur bis
+  zur Figur reicht und nach hinten ausblendet.
+- **Figur:** Ober-/Unterschenkel mit Kniebeuge, Stiefel, Rumpf, Gurt, Helm mit Stirnlampe,
+  Rucksack mit Deckel, Isomatte und Seitentasche, Handschuhe, Eispickel (Schaft, Haue, Schaufel,
+  Spitze); weicher Schatten (`PCFShadowMap` + `shadow.radius`) plus Kontaktschatten.
+- **Hütte, Zelte, Gipfel:** Satteldach-Hütte mit Steinsockel, Schneekappe, Kamin und warm
+  leuchtenden Fenstern auf einer Geländeterrasse; Kuppelzelte am Basislager; Gipfelkreuz aus
+  Holz, Steinmann und wehende Fahne.
+- **Atmosphäre:** Himmelsverlauf mit Sonnen-Glow, Nebel, drei gestaffelte ferne Grate mit Dunst,
+  Wolkenmeer ab halber Strecke, leichter Schneefall (bewegt sich mit dem Scroll, nicht mit der
+  Zeit); Licht wird zum Gipfel wärmer und stärker.
+- **Kamera:** Totale auf den ganzen Berg → Verfolgung (Bodenabstand gesichert) → Gipfel-Totale
+  mit Blick über das Plateau.
+- Unverändert: Scroll-Steuerung, Etappen, Höhenmesser, Pause ohne Scroll / bei verborgenem Tab,
+  Pixel-Ratio-Grenzen, Lazy-Load von Three.js, Reduced-Motion-Standbild.
+
 ### Recherche-Quellen (geöffnet)
+
+- three.js-Doku `TerrainGenerator` (https://threejs.org/docs/pages/TerrainGenerator.html) und der
+  Quelltext `examples/jsm/generators/TerrainGenerator.js` (r186, in `node_modules`):
+  derivative-gedämpftes Rauschen mit ~37°-Rotation, thermische Erosion „shedding the fractal's
+  needle-spikes“, Fels/Geröll/Schnee nach Höhe und Neigung, Mulden-Abdunklung, Bump über
+  Mikkelsens Surface-Gradient, Luftperspektive. Das Original ist TSL/WebGPU; hier für den
+  WebGLRenderer in GLSL nachgebaut (v3).
+- three.js r186 `WebGLShadowMap`: `PCFSoftShadowMap` ist entfernt (Warnung) → `PCFShadowMap` mit
+  `shadow.radius` (v3).
 
 - Codrops, „How to Build Cinematic 3D Scroll Experiences with GSAP“ (19.11.2025) –
   gepinnter Abschnitt, Scroll-Fortschritt treibt Proxy-Werte im Render-Loop, Kapiteltexte.

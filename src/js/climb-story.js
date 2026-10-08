@@ -51,7 +51,7 @@ export function setupClimbStory({ reduced }) {
     loadScene.started = true;
     try {
       const { createClimb } = await import('../webgl/climb.js');
-      climb = createClimb(canvas, {
+      climb = await createClimb(canvas, {
         reducedMotion: reduced, isMobile,
         onAltitude: (m) => { sceneAltitude = true; setAltitude(m); },
       });
