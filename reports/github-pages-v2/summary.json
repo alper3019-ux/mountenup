@@ -1,0 +1,158 @@
+{
+  "url": "https://alper3019-ux.github.io/mountenup/",
+  "date": "2026-10-08T20:35:27.531Z",
+  "lighthouse": {
+    "mobile": {
+      "runs": 1,
+      "scoresMedian": {
+        "performance": 77,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100,
+        "agentic-browsing": 100
+      },
+      "performancePerRun": [
+        77
+      ],
+      "metricsMedian": {
+        "fcp": 1530,
+        "lcp": 2232.5,
+        "tbt": 740.5,
+        "cls": 0,
+        "si": 4537.593,
+        "bytes": 604454
+      }
+    },
+    "desktop": {
+      "runs": 1,
+      "scoresMedian": {
+        "performance": 92,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100,
+        "agentic-browsing": 100
+      },
+      "performancePerRun": [
+        92
+      ],
+      "metricsMedian": {
+        "fcp": 376.283,
+        "lcp": 462.283,
+        "tbt": 183.5,
+        "cls": 0.002,
+        "si": 1750.085,
+        "bytes": 504278
+      }
+    }
+  },
+  "axe": {
+    "desktop": {
+      "violations": 0,
+      "nodes": 0,
+      "list": []
+    },
+    "mobile": {
+      "violations": 0,
+      "nodes": 0,
+      "list": []
+    }
+  },
+  "transfer": {
+    "totalBytes": 463773,
+    "requests": 13,
+    "thirdPartyHosts": [],
+    "list": [
+      {
+        "url": "https://alper3019-ux.github.io/mountenup/",
+        "type": "document",
+        "status": 200,
+        "transfer": 7840,
+        "encoding": "gzip"
+      },
+      {
+        "url": "https://alper3019-ux.github.io/mountenup/photos/hero-1440.avif",
+        "type": "image",
+        "status": 200,
+        "transfer": 61943,
+        "encoding": ""
+      },
+      {
+        "url": "https://alper3019-ux.github.io/mountenup/assets/main-DSOu6n1n.css",
+        "type": "stylesheet",
+        "status": 200,
+        "transfer": 6305,
+        "encoding": "gzip"
+      },
+      {
+        "url": "https://alper3019-ux.github.io/mountenup/assets/inter-tight-latin-wght-normal-DX-nOvPD.woff2",
+        "type": "font",
+        "status": 200,
+        "transfer": 45039,
+        "encoding": ""
+      },
+      {
+        "url": "https://alper3019-ux.github.io/mountenup/assets/main-Bau_RfD2.js",
+        "type": "script",
+        "status": 200,
+        "transfer": 56771,
+        "encoding": "gzip"
+      },
+      {
+        "url": "https://alper3019-ux.github.io/mountenup/assets/instrument-serif-latin-400-normal-DnYpCC2O.woff2",
+        "type": "font",
+        "status": 200,
+        "transfer": 21193,
+        "encoding": ""
+      },
+      {
+        "url": "https://alper3019-ux.github.io/mountenup/assets/jetbrains-mono-latin-400-normal-V6pRDFza.woff2",
+        "type": "font",
+        "status": 200,
+        "transfer": 21326,
+        "encoding": ""
+      },
+      {
+        "url": "https://alper3019-ux.github.io/mountenup/assets/instrument-serif-latin-400-italic-DKMiL14s.woff2",
+        "type": "font",
+        "status": 200,
+        "transfer": 22498,
+        "encoding": ""
+      },
+      {
+        "url": "https://alper3019-ux.github.io/mountenup/favicon.svg",
+        "type": "other",
+        "status": 200,
+        "transfer": 348,
+        "encoding": "gzip"
+      },
+      {
+        "url": "https://alper3019-ux.github.io/mountenup/photos/tour-hochtour-480.avif",
+        "type": "image",
+        "status": 200,
+        "transfer": 14008,
+        "encoding": ""
+      },
+      {
+        "url": "https://alper3019-ux.github.io/mountenup/photos/tour-klettern-480.avif",
+        "type": "image",
+        "status": 200,
+        "transfer": 35578,
+        "encoding": ""
+      },
+      {
+        "url": "https://alper3019-ux.github.io/mountenup/photos/tour-expedition-480.avif",
+        "type": "image",
+        "status": 200,
+        "transfer": 30999,
+        "encoding": ""
+      },
+      {
+        "url": "https://alper3019-ux.github.io/mountenup/assets/climb-CDe33xUO.js",
+        "type": "script",
+        "status": 200,
+        "transfer": 139925,
+        "encoding": "gzip"
+      }
+    ]
+  }
+}
